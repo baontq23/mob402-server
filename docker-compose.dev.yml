@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mongo:
+    volumes:
+      - ./data:/data/db
+
+  app:
+    container_name: ts-node-app-dev
+    volumes:
+      - ./src:/usr/src/app/src
+    command: yarn dev -L
+
+volumes:
+  mongo-data:
+    driver: local
