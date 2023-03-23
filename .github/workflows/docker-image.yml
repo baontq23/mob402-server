@@ -9,7 +9,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    permissions:
+      packages: write
+      contents: read
+      
     steps:
     - uses: actions/checkout@v3
     - name: Login to GitHub Container Registry
@@ -21,5 +24,4 @@ jobs:
     - name: Build the Docker image
       run: |
        docker build . --tag ghcr.io/baontq23/mob402-server-app:latest
-       docker run ghcr.io/baontq23/mob402-server-app:latest
        docker push ghcr.io/baontq23/mob402-server-app:latest
