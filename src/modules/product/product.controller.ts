@@ -8,7 +8,7 @@ import { IOptions } from '../paginate/paginate';
 import * as productService from './product.service';
 
 export const createProduct = catchAsync(async (req: Request, res: Response) => {
-  const user = await productService.createProduct({ ...req.body, user: req.user._id });
+  const user = await productService.createProduct({ ...req.body, user: req.user._id, image: req.file?.filename });
   res.status(httpStatus.CREATED).send(user);
 });
 
