@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import toJSON from '../toJSON/toJSON';
 import paginate from '../paginate/paginate';
 import { IProductDoc, IProductModel } from './product.interfaces';
+import config from './../../config/config';
 
 const productSchema = new mongoose.Schema<IProductDoc, IProductModel>(
   {
@@ -37,8 +38,21 @@ const productSchema = new mongoose.Schema<IProductDoc, IProductModel>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
+
+productSchema.virtual('image_link').get(function (this: IProductDoc) {
+  if (this.image) {
+    return `${config.cdnUrl}/${this.image}`;
+  }
+  return null;
+});
 
 // add plugin that converts mongoose to json
 productSchema.plugin(toJSON);
