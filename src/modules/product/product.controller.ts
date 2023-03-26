@@ -8,7 +8,7 @@ import { IOptions } from '../paginate/paginate';
 import * as productService from './product.service';
 
 export const createProduct = catchAsync(async (req: Request, res: Response) => {
-  const user = await productService.createProduct({ ...req.body, user: req.user._id });
+  const user = await productService.createProduct({ ...req.body, user: req.user._id, image: req.file?.filename });
   res.status(httpStatus.CREATED).send(user);
 });
 
@@ -41,7 +41,8 @@ export const getProduct = catchAsync(async (req: Request, res: Response) => {
 
 export const updateProduct = catchAsync(async (req: Request, res: Response) => {
   if (typeof req.params['productId'] === 'string') {
-    const user = await productService.updateProductById(new mongoose.Types.ObjectId(req.params['productId']), req.body);
+    const updateData = req.file?.filename ? { ...req.body, image: req.file?.filename } : req.body;
+    const user = await productService.updateProductById(new mongoose.Types.ObjectId(req.params['productId']), updateData);
     res.send(user);
   }
 });

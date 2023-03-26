@@ -11,6 +11,8 @@ services:
       - backend
   app:
     container_name: ts-node-app
+    volumes:
+      - ./public:/usr/src/app/public
     build:
       context: .
       dockerfile: Dockerfile
