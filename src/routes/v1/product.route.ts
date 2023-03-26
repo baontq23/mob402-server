@@ -19,7 +19,12 @@ router
 router
   .route('/:productId')
   .get(auth('getProducts'), validate(productValidation.getProduct), productController.getProduct)
-  .patch(auth('manageProducts'), validate(productValidation.updateProduct), productController.updateProduct)
+  .patch(
+    auth('manageProducts'),
+    storage.productImageUpload.single('image'),
+    validate(productValidation.updateProduct),
+    productController.updateProduct
+  )
   .delete(auth('manageProducts'), validate(productValidation.deleteProduct), productController.deleteProduct);
 
 export default router;
