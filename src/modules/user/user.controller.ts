@@ -8,12 +8,13 @@ import { IOptions } from '../paginate/paginate';
 import * as userService from './user.service';
 
 export const createUser = catchAsync(async (req: Request, res: Response) => {
-  const user = await userService.createUser(req.body);
+  const updateData = req.file?.filename ? { ...req.body, avatar: req.file?.filename } : req.body;
+  const user = await userService.createUser(updateData);
   res.status(httpStatus.CREATED).send(user);
 });
 
 export const getUsers = catchAsync(async (req: Request, res: Response) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['name', 'role', 'email'], true);
   const options: IOptions = pick(req.query, ['sortBy', 'limit', 'page', 'projectBy']);
   const result = await userService.queryUsers(filter, options);
   res.send(result);
@@ -31,7 +32,8 @@ export const getUser = catchAsync(async (req: Request, res: Response) => {
 
 export const updateUser = catchAsync(async (req: Request, res: Response) => {
   if (typeof req.params['userId'] === 'string') {
-    const user = await userService.updateUserById(new mongoose.Types.ObjectId(req.params['userId']), req.body);
+    const updateData = req.file?.filename ? { ...req.body, avatar: req.file?.filename } : req.body;
+    const user = await userService.updateUserById(new mongoose.Types.ObjectId(req.params['userId']), updateData);
     res.send(user);
   }
 });
