@@ -17,6 +17,7 @@ export const getUsers = {
   query: Joi.object().keys({
     name: Joi.string(),
     role: Joi.string(),
+    email: Joi.string(),
     sortBy: Joi.string(),
     projectBy: Joi.string(),
     limit: Joi.number().integer(),
@@ -40,7 +41,22 @@ export const updateUser = {
       password: Joi.string().custom(password),
       name: Joi.string(),
     })
-    .min(1),
+    .min(0),
+};
+
+export const adminUpdateUser = {
+  params: Joi.object().keys({
+    userId: Joi.required().custom(objectId),
+  }),
+  body: Joi.object()
+    .keys({
+      email: Joi.string().email(),
+      password: Joi.string().custom(password),
+      role: Joi.string(),
+      name: Joi.string(),
+      isEmailVerified: Joi.boolean(),
+    })
+    .min(0),
 };
 
 export const deleteUser = {
