@@ -3,6 +3,7 @@ import authRoute from './auth.route';
 import userRoute from './user.route';
 import productRoute from './product.route';
 import adminProductRoute from './admin.product.route';
+import adminUserRoute from './admin.user.route';
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const defaultIRoute: IRoute[] = [
   {
     path: '/admin/products',
     route: adminProductRoute,
+  },
+  {
+    path: '/admin/users',
+    route: adminUserRoute,
   },
 ];
 

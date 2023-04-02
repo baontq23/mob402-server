@@ -5,6 +5,7 @@ import toJSON from '../toJSON/toJSON';
 import paginate from '../paginate/paginate';
 import { roles } from '../../config/roles';
 import { IUserDoc, IUserModel } from './user.interfaces';
+import config from '../../config/config';
 
 const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
   {
@@ -54,9 +55,20 @@ const userSchema = new mongoose.Schema<IUserDoc, IUserModel>(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
-
+userSchema.virtual('avatar_link').get(function (this: IUserDoc) {
+  if (this.avatar) {
+    return `${config.cdnUrl}/${this.avatar}`;
+  }
+  return null;
+});
 // add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
