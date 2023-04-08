@@ -19,6 +19,13 @@ export const login = catchAsync(async (req: Request, res: Response) => {
   res.send({ user, tokens });
 });
 
+export const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const { email, old_password, new_password } = req.body;
+  await authService.loginUserWithEmailAndPassword(email, old_password);
+  await userService.updateUserById(req.user.id, { password: new_password });
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 export const logout = catchAsync(async (req: Request, res: Response) => {
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.NO_CONTENT).send();
